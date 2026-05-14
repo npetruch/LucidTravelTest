@@ -2,3 +2,5 @@ version: 0.5
 base: php:7.3
 build: composer install
 run: php -f auth-api-curl.php
+
+# comment
