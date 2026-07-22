@@ -1,8 +1,6 @@
 // To get Access to the .env where Pandium secrets, configs, and context can be accessed.
 import * as dotenv from 'dotenv'
-import GorgiasClient from '@pandium/gorgias-client'
-import IterableClient from '@pandium/iterable-client'
-
+// Client Imports
 
 dotenv.config()
 
@@ -14,58 +12,31 @@ const run = async () => {
     const secrets = new Secret()
     const config = new Config()
 
+    // Pandium integrations can be run in 'init' or 'normal' mode.
+    // When the integration is run on Pandium, Pandium will provide run_mode through context.
+    // During local development run mode is defined in the .env as PAN_CTX_RUN_MODE
     console.error(`This run is in mode: ${context['run_mode']}`)
     console.error('------------------------CONFIG------------------------')
     console.error(config)
+
     console.error('------------------------SECRET------------------------')
     console.error(secrets)
+
     console.error('------------------------CONTEXT------------------------')
     console.error(context)
+
     console.error('------------------------ENV----------------------------')
     console.error(process.env)
 
-    try {
-        const gorgias = new GorgiasClient(abortController)
-    
-        console.error('Fetching and logging IDs for first 10 Gorgias customers ')
-        let recordCounter = 0
-        const records = gorgias.listCustomers()
-        for await (const record of records) {
-            if (recordCounter > 10) break
-            console.error(record.id)
-            recordCounter++
-        }
-    } catch (error) {
-        console.error('❌ Unexpected Gorgias error.')
-        console.error(error)
-    }
-    
-    try {
-        const iterable = new IterableClient(abortController)
-    
-        console.error('Fetching and Logging Iterable Catalog Names')
-        const catalogs = await iterable.listCatalogs()
-        let catalogCounter = 0
-        for await (let catalog of catalogs) {
-            if (catalogCounter > 10) break
-            console.error(catalog.name) // Here, each iteration will yield your data whenever it's ready. No need for Promise callbacks or async/await calls here.
-            catalogCounter++
-        }
-    } catch (error) {
-        console.error('❌ Unexpected Iterable error.')
-        // @ts-ignore
-        console.error(error.message)
-        console.error(error)
-    }
-    
-
-
+    // Example client code:
 }
 
+// Waiting for the resolution of the run function's promise is the entry point for the whole integration.
 run().then(
+    // When the promise is resolved no further action needed.
     () => {},
-    (error) => {
-        console.error("Unhandled error:", error);
+    // When the promise is rejected a nonzero exit code will fail the run.
+    () => {
         process.exitCode = 1
     }
 )
