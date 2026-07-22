@@ -1,0 +1,24 @@
+{
+  "name": "cftest2",
+  "version": "1.0.0",
+  "main": "build/src/",
+  "scripts": {
+    "start": "node build/src/",
+    "build": "tsc"
+  },
+  "type": "module",
+  "dependencies": {
+    "axios": "^1.16.0",
+    "axios-retry": "^4.5.0",
+    "dotenv": "^17.4.2",
+    "ts-leaky-bucket": "1.1.1",
+    "typescript": "^6.0.3",
+    "@pandium/gorgias-client": "*",
+    "@pandium/iterable-client": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "gts": "^7.0.0",
+    "tsx": "^4.21.0"
+  }
+}
